@@ -18,6 +18,7 @@ using AutoMapper;
 using Api.CrossCutting.DependencyInjection;
 using Api.Domain.Security;
 using src.Api.CrossCutting.Mappings;
+using Api.Data.Context;
 
 namespace application
 {
@@ -154,6 +155,17 @@ namespace application
             {
                 endpoints.MapControllers();
             });
+
+            if (Environment.GetEnvironmentVariable("MIGRATION").ToLower() == "APLICAR".ToLower())
+            {
+                using (var service = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    using (var context = service.ServiceProvider.GetService<MyContext>())
+                    {
+                        context.Database.Migrate();
+                    }
+                }
+            }
         }
     }
 }
