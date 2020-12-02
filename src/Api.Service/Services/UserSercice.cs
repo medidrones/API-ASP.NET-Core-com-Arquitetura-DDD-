@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Api.Domain.Entities;
 using Api.Domain.Interfaces;
 using Api.Domain.Interfaces.Services.User;
+using Api.Domain.Dtos.User;
+using src.Api.Domain.Dtos.User;
 
 namespace Api.Service.Services
 {
@@ -11,9 +14,12 @@ namespace Api.Service.Services
     {
         private IRepository<UserEntity> _repository;
 
-        public UserService(IRepository<UserEntity> repository)
+        private readonly IMapper _mapper;
+
+        public UserService(IRepository<UserEntity> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<bool> Delete(Guid id)
@@ -21,24 +27,36 @@ namespace Api.Service.Services
             return await _repository.DeleteAsync(id);
         }
 
-        public async Task<UserEntity> Get(Guid id)
+        public async Task<UserDto> Get(Guid id)
         {
-            return await _repository.SelectAsync(id);
+            var entity = await _repository.SelectAsync(id);
+
+            return _mapper.Map<UserDto>(entity) ?? new UserDto();
         }
 
-        public async Task<IEnumerable<UserEntity>> GetAll()
+        public async Task<IEnumerable<UserDto>> GetAll()
         {
-            return await _repository.SelectAsync();
+            var listEntity = await _repository.SelectAsync();
+
+            return _mapper.Map<IEnumerable<UserDto>>(listEntity);
         }
 
-        public async Task<UserEntity> Post(UserEntity user)
+        public async Task<UserDtoCreateResult> Post(UserDtoCreate user)
         {
-            return await _repository.InsertAsync(user);
+            var model = _mapper.Map<UserModel>(user);
+            var entity = _mapper.Map<UserEntity>(model);
+            var result = await _repository.InsertAsync(entity);
+
+            return _mapper.Map<UserDtoCreateResult>(result);
         }
 
-        public async Task<UserEntity> Put(UserEntity user)
+        public async Task<UserDtoUpdateResult> Put(UserDtoUpdate user)
         {
-            return await _repository.UpdateAsync(user);
+            var model = _mapper.Map<UserModel>(user);
+            var entity = _mapper.Map<UserEntity>(model);
+            var result = await _repository.UpdateAsync(entity);
+
+            return _mapper.Map<UserDtoUpdateResult>(result);
         }
     }
 }
