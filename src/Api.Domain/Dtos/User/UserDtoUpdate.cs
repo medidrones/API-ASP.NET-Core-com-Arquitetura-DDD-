@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace src.Api.Domain.Dtos.User
+namespace Api.Domain.Dtos.User
 {
     public class UserDtoUpdate
     {

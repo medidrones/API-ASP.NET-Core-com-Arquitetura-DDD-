@@ -1,6 +1,6 @@
 using System;
 
-namespace src.Api.Domain.Dtos.User
+namespace Api.Domain.Dtos.User
 {
     public class UserModel
     {

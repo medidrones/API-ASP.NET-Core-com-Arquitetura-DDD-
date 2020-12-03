@@ -4,7 +4,6 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Api.Domain.Interfaces.Services.User;
-using src.Api.Domain.Dtos.User;
 using Api.Domain.Dtos.User;
 
 namespace Api.Application.Controllers

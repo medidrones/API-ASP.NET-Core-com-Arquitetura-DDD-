@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using Api.CrossCutting.DependencyInjection;
 using Api.Domain.Security;
-using src.Api.CrossCutting.Mappings;
+using Api.CrossCutting.Mappings;
 using Api.Data.Context;
 
 namespace application

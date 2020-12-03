@@ -1,8 +1,8 @@
 using AutoMapper;
-using src.Api.Domain.Dtos.User;
+using Api.Domain.Dtos.User;
 using Api.Domain.Entities;
 
-namespace src.Api.CrossCutting.Mappings
+namespace Api.CrossCutting.Mappings
 {
     public class ModelToEntityProfile : Profile
     {
