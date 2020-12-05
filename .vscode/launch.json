@@ -21,7 +21,7 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "DB_CONNECTION": "Persist Security Info=True;Server=localhost;Port=3306;Database=dbAPI;Uid=root;Pwd=251308",
+                "DB_CONNECTION": "Persist Security Info=True;Server=localhost;Port=3306;Database=db_API;Uid=root;Pwd=251308",
                 "DATABASE": "MYSQL",
                 "MIGRATION": "APLICAR",
                 "Audience": "ExemploAudience",
