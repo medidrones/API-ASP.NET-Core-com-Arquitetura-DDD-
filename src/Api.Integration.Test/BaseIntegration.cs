@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using AutoMapper;
 using application;
+using AutoMapper;
+using Newtonsoft.Json;
 using Api.CrossCutting.Mappings;
 using Api.Data.Context;
 using Api.Domain.Dtos;
-
 
 namespace Api.Integration.Test
 {
@@ -71,7 +70,7 @@ namespace Api.Integration.Test
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new ModelToEntityProfile());
+                cfg.AddProfile(new DtoToModelProfile());
                 cfg.AddProfile(new EntityToDtoProfile());
                 cfg.AddProfile(new ModelToEntityProfile());
             });

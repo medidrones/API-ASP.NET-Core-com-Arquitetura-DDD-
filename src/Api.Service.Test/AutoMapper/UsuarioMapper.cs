@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Api.Domain.Dtos.User;
 using Api.Domain.Entities;
+using Api.Domain.Models;
+using Api.Domain.Dtos.User;
 
 namespace Api.Service.Test.AutoMapper
 {

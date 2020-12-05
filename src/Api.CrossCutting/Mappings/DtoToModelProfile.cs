@@ -1,5 +1,6 @@
 using AutoMapper;
 using Api.Domain.Dtos.User;
+using Api.Domain.Models;
 
 namespace Api.CrossCutting.Mappings
 {

@@ -1,10 +1,10 @@
 using System;
-using System.Net;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xunit;
 using Api.Domain.Dtos.User;
@@ -41,6 +41,7 @@ namespace Api.Integration.Test.Usuario
             //Get All
             response = await client.GetAsync($"{hostApi}users");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
             var jsonResult = await response.Content.ReadAsStringAsync();
             var listaFromJson = JsonConvert.DeserializeObject<IEnumerable<UserDto>>(jsonResult);
             Assert.NotNull(listaFromJson);
@@ -58,8 +59,8 @@ namespace Api.Integration.Test.Usuario
             var stringContent = new StringContent(JsonConvert.SerializeObject(updateUserDto), Encoding.UTF8, "application/json");
             response = await client.PutAsync($"{hostApi}users", stringContent);
             jsonResult = await response.Content.ReadAsStringAsync();
-
             var registroAtualizado = JsonConvert.DeserializeObject<UserDtoUpdateResult>(jsonResult);
+
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.NotEqual(registroPost.Name, registroAtualizado.Name);
             Assert.NotEqual(registroPost.Email, registroAtualizado.Email);
@@ -81,6 +82,7 @@ namespace Api.Integration.Test.Usuario
             //GET ID depois do DELETE
             response = await client.GetAsync($"{hostApi}users/{registroSelecionado.Id}");
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
         }
     }
 }

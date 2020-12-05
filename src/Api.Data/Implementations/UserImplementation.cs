@@ -1,9 +1,9 @@
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Api.Data.Repository;
 using Api.Domain.Entities;
 using Api.Domain.Repository;
 using Api.Data.Context;
-using System.Threading.Tasks;
 
 namespace Api.Data.Implementations
 {
