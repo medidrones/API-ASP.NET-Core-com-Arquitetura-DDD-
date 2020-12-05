@@ -1,20 +1,19 @@
 using System;
-using System.Threading.Tasks;
 using System.Net;
-using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Api.Domain.Interfaces.Services.User;
-using Api.Domain.Dtos.User;
+using Microsoft.AspNetCore.Mvc;
+using Api.Domain.Dtos.Municipio;
+using Api.Domain.Interfaces.Services.Municipio;
 
 namespace Api.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class MunicipiosController : ControllerBase
     {
-        private IUserService _service;
-
-        public UsersController(IUserService service)
+        public IMunicipioService _service { get; set; }
+        public MunicipiosController(IMunicipioService service)
         {
             _service = service;
         }
@@ -40,7 +39,7 @@ namespace Api.Application.Controllers
 
         [Authorize("Bearer")]
         [HttpGet]
-        [Route("{id}", Name = "GetWithId")]
+        [Route("{id}", Name = "GetMunicipioWithId")]
         public async Task<ActionResult> Get(Guid id)
         {
             if (!ModelState.IsValid)
@@ -64,9 +63,10 @@ namespace Api.Application.Controllers
             }
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<ActionResult> Post([FromBody] UserDtoCreate user)
+        [Authorize("Bearer")]
+        [HttpGet]
+        [Route("Complete/{id}")]
+        public async Task<ActionResult> GetCompleteById(Guid id)
         {
             if (!ModelState.IsValid)
             {
@@ -75,10 +75,61 @@ namespace Api.Application.Controllers
 
             try
             {
-                var result = await _service.Post(user);
+                var result = await _service.GetCompleteById(id);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [Authorize("Bearer")]
+        [HttpGet]
+        [Route("byIBGE/{codigoIBGE}")]
+        public async Task<ActionResult> GetCompleteByIBGE(int codigoIBGE)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var result = await _service.GetCompleteByIBGE(codigoIBGE);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [Authorize("Bearer")]
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] MunicipioDtoCreate dtoCreate)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var result = await _service.Post(dtoCreate);
                 if (result != null)
                 {
-                    return Created(new Uri(Url.Link("GetWithId", new { id = result.Id })), result);
+                    return Created(new Uri(Url.Link("GetMunicipioWithId", new { id = result.Id })), result);
                 }
                 else
                 {
@@ -93,8 +144,9 @@ namespace Api.Application.Controllers
 
         [Authorize("Bearer")]
         [HttpPut]
-        public async Task<ActionResult> Put([FromBody] UserDtoUpdate user)
+        public async Task<ActionResult> Put([FromBody] MunicipioDtoUpdate dtoUpdate)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -102,7 +154,7 @@ namespace Api.Application.Controllers
 
             try
             {
-                var result = await _service.Put(user);
+                var result = await _service.Put(dtoUpdate);
                 if (result != null)
                 {
                     return Ok(result);
@@ -116,6 +168,7 @@ namespace Api.Application.Controllers
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
+
         }
 
         [Authorize("Bearer")]
@@ -126,7 +179,6 @@ namespace Api.Application.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             try
             {
                 return Ok(await _service.Delete(id));
